@@ -313,8 +313,6 @@ def double_tree_all_reduce_kernel(
         
         tl.store(buffer_ptr + offsets + 0, acc_hi, mask=mask)
         tl.store(buffer_ptr + offsets + 1, acc_lo, mask=mask)
-        tl.store(output_ptr + offsets + 0, acc_hi, mask=mask)
-        tl.store(output_ptr + offsets + 1, acc_lo, mask=mask)
         block_start += tl.num_programs(axis=0) * BLOCK_SIZE
     
     if tree_parent != -1:
@@ -408,7 +406,7 @@ if __name__ == "__main__":
 
     torch.manual_seed(rank)
 
-    size = 1024*1024
+    size = 2048*1024
 
     tensor = _SymmetricMemory.empty_strided_p2p(
         size=(size,),
